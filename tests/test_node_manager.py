@@ -238,7 +238,9 @@ class TestNodeManager:
                             # Mock the download method to capture the node_dir value
                             with patch('py_node_manager.manager.urllib.request.urlretrieve'):
                                 with patch('py_node_manager.manager.os.makedirs'):
-                                    with patch('py_node_manager.manager.os.path.exists', return_value=False) as mock_exists:
+                                    with patch(
+                                        'py_node_manager.manager.os.path.exists', return_value=False
+                                    ) as mock_exists:
                                         with patch('py_node_manager.manager.tarfile.open'):
                                             with patch('py_node_manager.manager.zipfile.ZipFile'):
                                                 with patch('py_node_manager.manager.os.chmod'):
@@ -277,7 +279,8 @@ class TestNodeManager:
                             manager = self.NodeManager(download_node=True, node_version='18.17.0')
                             # Mock os.path.exists to return True for the executable path
                             with patch(
-                                'py_node_manager.manager.os.path.exists', side_effect=lambda path: path == expected_executable
+                                'py_node_manager.manager.os.path.exists',
+                                side_effect=lambda path: path == expected_executable,
                             ) as mock_exists:
                                 with patch('py_node_manager.manager.logger') as mock_logger:
                                     # Mock other methods to avoid actual download
