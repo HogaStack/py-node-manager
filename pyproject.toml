@@ -29,7 +29,7 @@ Repository = "https://github.com/HogaStack/py-node"
 Issues = "https://github.com/HogaStack/py-node/issues"
 
 [project.optional-dependencies]
-dev = ["build", "pytest>=6.0.0", "pytest-cov>=6.0.0", "twine"]
+dev = ["build", "pytest>=6.0.0", "pytest-cov>=2.10.0", "twine"]
 
 [tool.setuptools]
 packages = ["py_node"]
