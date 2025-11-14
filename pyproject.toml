@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "py-node"
+version = "0.1.0"
+description = "A tool library for conveniently using Node.js in Python"
+readme = "README.md"
+requires-python = ">=3.8"
+authors = [{name = "insistence", email = "3055204202@qq.com"}]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.urls]
+Homepage = "https://github.com/HogaStack/py-node"
+Documentation = "https://github.com/HogaStack/py-node"
+Repository = "https://github.com/HogaStack/py-node"
+Issues = "https://github.com/HogaStack/py-node/issues"
+
+[project.optional-dependencies]
+dev = ["build", "pytest>=6.0.0", "pytest-cov>=6.0.0", "twine"]
+
+[tool.setuptools]
+packages = ["py_node"]
