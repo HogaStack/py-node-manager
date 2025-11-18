@@ -6,48 +6,10 @@ import tarfile
 import urllib.request
 import zipfile
 from typing import Dict, Optional, Tuple
+from .logger import get_logger
 
 
-# Custom log formatter to add colors for different log levels
-class ColoredFormatter(logging.Formatter):
-    """Custom log formatter to add colors for different log levels and emoji"""
-
-    # ANSI颜色代码
-    COLORS = {
-        'DEBUG': '\033[36m',  # cyan
-        'INFO': '\033[32m',  # green
-        'WARNING': '\033[33m',  # yellow
-        'ERROR': '\033[31m',  # red
-        'CRITICAL': '\033[35m',  # purple
-        'RESET': '\033[0m',  # reset
-    }
-
-    def format(self, record: logging.LogRecord) -> str:
-        # Obtain the color corresponding to the log level
-        log_color = self.COLORS.get(record.levelname, self.COLORS['RESET'])
-        reset_color = self.COLORS['RESET']
-
-        # Add color to log level
-        record.levelname = f'{log_color}{record.levelname}{reset_color}'
-
-        # Call the format method of the parent class
-        return super().format(record)
-
-
-# Configure the logger
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
-# Create console processor
-console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.INFO)
-
-# Create formatter
-formatter = ColoredFormatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-console_handler.setFormatter(formatter)
-
-# Add handler to logger
-logger.addHandler(console_handler)
+logger = get_logger(logging.getLogger(__name__))
 
 
 class NodeManager:
