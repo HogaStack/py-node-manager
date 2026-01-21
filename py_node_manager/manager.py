@@ -6,8 +6,8 @@ import tarfile
 import urllib.request
 import zipfile
 from typing import Dict, Literal, Optional, Tuple
-from .logger import get_logger
 
+from .logger import get_logger
 
 logger = get_logger(logging.getLogger(__name__))
 
