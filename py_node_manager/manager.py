@@ -5,7 +5,7 @@ import subprocess
 import tarfile
 import urllib.request
 import zipfile
-from typing import Dict, Optional, Tuple
+from typing import Dict, Literal, Optional, Tuple
 from .logger import get_logger
 
 
@@ -17,7 +17,13 @@ class NodeManager:
     Node.js manager class
     """
 
-    def __init__(self, download_node: bool, node_version: str, is_cli: bool = False):
+    def __init__(
+        self,
+        download_node: bool,
+        node_version: str,
+        is_cli: bool = False,
+        log_show_mode: Literal['all', 'slim', 'hide'] = 'all',
+    ):
         """
         Node.js manager class
 
@@ -29,6 +35,7 @@ class NodeManager:
         self.download_node = download_node
         self.node_version = node_version
         self.is_cli = is_cli
+        self.log_show_mode = log_show_mode
         self.node_path = self._node_path()
         self.node_env = self._node_env()
         self.npm_path = self._npm_path()
@@ -86,7 +93,7 @@ class NodeManager:
 
         # Create directory for downloaded Node.js within the package directory
         # Use the package directory instead of current working directory
-        # Get the directory of this utils.py file
+        # Get the directory of this file
         package_dir = os.path.dirname(os.path.abspath(__file__))
         node_dir_path = os.path.join(package_dir, '.nodejs_cache')
         if not os.path.exists(node_dir_path):
@@ -100,18 +107,20 @@ class NodeManager:
 
         # If Node.js already exists, return the path without downloading
         if os.path.exists(node_executable):
-            logger.info(f'📦 Using cached Node.js from {node_executable}')
+            if self.log_show_mode in {'all', 'slim'}:
+                logger.info(f'📦 Using cached Node.js from {node_executable}')
             return node_executable
 
         # Download Node.js
         node_archive = os.path.join(node_dir_path, os.path.basename(node_url))
-        logger.info('🌐 Node.js not found in PATH. Downloading Node.js...')
-        if self.is_cli:
+        if self.log_show_mode in {'all', 'slim'}:
+            logger.info('🌐 Node.js not found in PATH. Downloading Node.js...')
+        if self.log_show_mode == 'all' and self.is_cli:
             logger.info(f'📥 Downloading Node.js from {node_url}...')
         urllib.request.urlretrieve(node_url, node_archive)
 
         # Extract Node.js
-        if self.is_cli:
+        if self.log_show_mode == 'all' and self.is_cli:
             logger.info('🔧 Extracting Node.js...')
         if node_archive.endswith('.tar.gz'):
             with tarfile.open(node_archive, 'r:gz') as tar:
@@ -130,7 +139,8 @@ class NodeManager:
         if system != 'windows':
             os.chmod(node_executable, 0o755)
 
-        logger.info(f'✅ Node.js downloaded and extracted to {node_executable}')
+        if self.log_show_mode in {'all', 'slim'}:
+            logger.info(f'✅ Node.js downloaded and extracted to {node_executable}')
         return node_executable
 
     def check_or_download_nodejs(self) -> Optional[str]:
@@ -143,7 +153,8 @@ class NodeManager:
         # First check if Node.js is available in PATH
         is_available, version = self.check_nodejs_available()
         if is_available:
-            logger.info(f'💻 Using System Default Node.js {version}')
+            if self.log_show_mode in {'all', 'slim'}:
+                logger.info(f'💻 Using System Default Node.js {version}')
 
             return None  # Use system Node.js
 
